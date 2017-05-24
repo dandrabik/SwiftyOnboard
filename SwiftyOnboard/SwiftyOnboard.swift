@@ -13,7 +13,8 @@ public protocol SwiftyOnboardDataSource: class {
     func swiftyOnboardBackgroundColorFor(_ swiftyOnboard: SwiftyOnboard, atIndex index: Int) -> UIColor?
     func swiftyOnboardNumberOfPages(_ swiftyOnboard: SwiftyOnboard) -> Int
     func swiftyOnboardViewForBackground(_ swiftyOnboard: SwiftyOnboard) -> UIView?
-    func swiftyOnboardPageForIndex(_ swiftyOnboard: SwiftyOnboard, index: Int) -> SwiftyOnboardPage?
+    func swiftyOnboardPageForIndex(_ swiftyOnboard: SwiftyOnboard, index: Int) -> UIView?
+    // TODO: Convert this to return a generic UIView
     func swiftyOnboardViewForOverlay(_ swiftyOnboard: SwiftyOnboard) -> SwiftyOnboardOverlay?
     func swiftyOnboardOverlayForPosition(_ swiftyOnboard: SwiftyOnboard, overlay: SwiftyOnboardOverlay, for position: Double)
     
@@ -78,16 +79,14 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
     fileprivate var dataSourceSet: Bool = false
     fileprivate var pageCount = 0
     fileprivate var overlay: SwiftyOnboardOverlay?
-    fileprivate var pages = [SwiftyOnboardPage]()
-    
-    open var style: SwiftyOnboardStyle = .dark
+    fileprivate var pages = [UIView]()
+
     open var shouldSwipe: Bool = true
     open var fadePages: Bool = true
     
     
-    public init(frame: CGRect, style: SwiftyOnboardStyle = .dark) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.style = style
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -133,7 +132,6 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
             for index in 0..<pageCount{
                 if let view = dataSource.swiftyOnboardPageForIndex(self, index: index) {
                     self.contentMode = .scaleAspectFit
-                    view.set(style: style)
                     containerView.addSubview(view)
                     var viewFrame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
                     viewFrame.origin.x = self.frame.width * CGFloat(index)
@@ -149,7 +147,6 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
         if let dataSource = dataSource {
             if let overlay = dataSource.swiftyOnboardViewForOverlay(self) {
                 overlay.page(count: self.pageCount)
-                overlay.set(style: style)
                 self.addSubview(overlay)
                 self.bringSubview(toFront: overlay)
                 let viewFrame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)

@@ -40,11 +40,19 @@ open class SwiftyOnboardPage: UIView {
         super.init(coder: aDecoder)
     }
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
-        setUp()
+        addSubview(imageView)
+        addSubview(title)
+        addSubview(subTitle)
+        setConstraints()
     }
-    
+
+    public convenience init(style: SwiftyOnboardStyle = .dark) {
+        self.init()
+        set(style: style)
+    }
+
     func set(style: SwiftyOnboardStyle) {
         switch style {
         case .light:
@@ -56,22 +64,19 @@ open class SwiftyOnboardPage: UIView {
         }
     }
     
-    func setUp() {
-        self.addSubview(imageView)
+    open func setConstraints() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         imageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5).isActive = true
-        
-        self.addSubview(title)
+
         title.translatesAutoresizingMaskIntoConstraints = false
         title.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         title.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         title.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10).isActive = true
         title.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        self.addSubview(subTitle)
+
         subTitle.translatesAutoresizingMaskIntoConstraints = false
         subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         subTitle.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true

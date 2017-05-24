@@ -33,9 +33,17 @@ open class SwiftyOnboardOverlay: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUp()
+        addSubview(pageControl)
+        addSubview(continueButton)
+        addSubview(skipButton)
+        setContraints()
     }
-    
+
+    public convenience init(style: SwiftyOnboardStyle) {
+        self.init()
+        set(style: style)
+    }
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -49,7 +57,7 @@ open class SwiftyOnboardOverlay: UIView {
         return false
     }
     
-    open func set(style: SwiftyOnboardStyle) {
+    open func set(style: SwiftyOnboardStyle = .dark) {
         switch style {
         case .light:
             continueButton.setTitleColor(.white, for: .normal)
@@ -70,22 +78,19 @@ open class SwiftyOnboardOverlay: UIView {
         pageControl.currentPage = index
     }
     
-    func setUp() {
-        self.addSubview(pageControl)
+    open func setContraints() {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.heightAnchor.constraint(equalToConstant: 15).isActive = true
         pageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         pageControl.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         pageControl.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        
-        self.addSubview(continueButton)
+
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         continueButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         continueButton.bottomAnchor.constraint(equalTo: pageControl.topAnchor, constant: -20).isActive = true
         continueButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         continueButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        
-        self.addSubview(skipButton)
+
         skipButton.translatesAutoresizingMaskIntoConstraints = false
         skipButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         skipButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 40).isActive = true

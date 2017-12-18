@@ -156,7 +156,7 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
         }
     }
     
-    internal func tappedPage() {
+    @objc internal func tappedPage() {
         let currentpage = Int(getCurrentPosition())
         self.delegate?.swiftyOnboard(self, tapped: currentpage)
     }
@@ -179,19 +179,19 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
             
             if let color1 = color1,
                 let color2 = color2{
-                return colorFrom(start: color1, end: color2, precent: Float(precentage))
+                return colorFrom(start: color1, end: color2, precent: precentage)
             }
         }
         return nil
     }
     
-    fileprivate func colorFrom(start color1: UIColor, end color2: UIColor, precent: Float)->UIColor{
-        func cofd(_ color1: CGFloat,_ color2: CGFloat,_ precent: Float)-> Float{
-            let c1 = Float(color1)
-            let c2 = Float(color2)
+    fileprivate func colorFrom(start color1: UIColor, end color2: UIColor, precent: CGFloat)->UIColor{
+        func cofd(_ color1: CGFloat,_ color2: CGFloat,_ precent: CGFloat)-> CGFloat{
+            let c1 = CGFloat(color1)
+            let c2 = CGFloat(color2)
             return (c1 + ((c2 - c1) * precent))
         }
-        return UIColor(colorLiteralRed: cofd(color1.cgColor.components![0],
+        return UIColor(red: cofd(color1.cgColor.components![0],
                                              color2.cgColor.components![0],
                                              precent),
                        green: cofd(color1.cgColor.components![1],

@@ -63,7 +63,7 @@ open class SwiftyOnboardPage: UIView {
             subTitle.textColor = .black
         }
     }
-    
+
     open func setConstraints() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true

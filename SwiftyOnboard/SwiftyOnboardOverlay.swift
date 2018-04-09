@@ -77,7 +77,7 @@ open class SwiftyOnboardOverlay: UIView {
     open func currentPage(index: Int) {
         pageControl.currentPage = index
     }
-    
+
     open func setContraints() {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.heightAnchor.constraint(equalToConstant: 15).isActive = true
@@ -93,7 +93,7 @@ open class SwiftyOnboardOverlay: UIView {
 
         skipButton.translatesAutoresizingMaskIntoConstraints = false
         skipButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        skipButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 40).isActive = true
+        skipButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         skipButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         skipButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
     }

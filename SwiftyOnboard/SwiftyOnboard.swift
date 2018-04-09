@@ -152,6 +152,7 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
                 let viewFrame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
                 overlay.frame = viewFrame
                 self.overlay = overlay
+                self.overlay?.pageControl.addTarget(self, action: #selector(didTapPageControl), for: .allTouchEvents)
             }
         }
     }
@@ -169,9 +170,9 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
     }
     
     fileprivate func colorForPosition(_ pos: CGFloat)->UIColor?{
-        let precentage: CGFloat = pos - CGFloat(Int(pos))
+        let percentage: CGFloat = pos - CGFloat(Int(pos))
         
-        let currentIndex = Int(pos - precentage)
+        let currentIndex = Int(pos - percentage)
         
         if currentIndex < pageCount - 1{
             let color1 = dataSource?.swiftyOnboardBackgroundColorFor(self, atIndex: currentIndex)
@@ -179,48 +180,40 @@ public class SwiftyOnboard: UIView, UIScrollViewDelegate {
             
             if let color1 = color1,
                 let color2 = color2{
-                return colorFrom(start: color1, end: color2, precent: precentage)
+                return colorFrom(start: color1, end: color2, percent: percentage)
             }
         }
         return nil
     }
-    
-    fileprivate func colorFrom(start color1: UIColor, end color2: UIColor, precent: CGFloat)->UIColor{
-        func cofd(_ color1: CGFloat,_ color2: CGFloat,_ precent: CGFloat)-> CGFloat{
+
+    fileprivate func colorFrom(start color1: UIColor, end color2: UIColor, percent: CGFloat)->UIColor{
+        func cofd(_ color1: CGFloat,_ color2: CGFloat,_ percent: CGFloat)-> CGFloat{
             let c1 = CGFloat(color1)
             let c2 = CGFloat(color2)
-            return (c1 + ((c2 - c1) * precent))
+            return (c1 + ((c2 - c1) * percent))
         }
         return UIColor(red: cofd(color1.cgColor.components![0],
-                                             color2.cgColor.components![0],
-                                             precent),
+                                 color2.cgColor.components![0],
+                                 percent),
                        green: cofd(color1.cgColor.components![1],
                                    color2.cgColor.components![1],
-                                   precent),
+                                   percent),
                        blue: cofd(color1.cgColor.components![2],
                                   color2.cgColor.components![2],
-                                  precent),
+                                  percent),
                        alpha: 1)
-        
     }
     
     fileprivate func fadePageTransitions(containerView: UIScrollView, currentPage: Int) {
-        //Shorter Solution:
         for (index,page) in pages.enumerated() {
             page.alpha = 1 - abs(abs(containerView.contentOffset.x) - page.frame.width * CGFloat(index)) / page.frame.width
         }
-
-//        let diffFromCenter: CGFloat = abs(containerView.contentOffset.x - (CGFloat(currentPage)) * self.frame.size.width)
-//        let currentPageAlpha: CGFloat = 1.0 - diffFromCenter / self.frame.size.width
-//        let sidePagesAlpha: CGFloat = diffFromCenter / self.frame.size.width
-//        //NSLog(@"%f",currentPageAlpha);
-//        pages[currentPage].alpha = currentPageAlpha
-//        if currentPage > 0 {
-//            pages[currentPage - 1].alpha = sidePagesAlpha
-//        }
-//        if currentPage < pages.count - 1 {
-//            pages[currentPage + 1].alpha = sidePagesAlpha
-//        }
+    }
+    
+    @objc open func didTapPageControl(_ sender: Any) {
+        let pager = sender as! UIPageControl
+        let page = pager.currentPage
+        self.goToPage(index: page, animated: true)
     }
     
     open var currentPage: Int{
